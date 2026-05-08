@@ -160,7 +160,7 @@ const btnTodos = document.querySelector("#btnTodos");
 const btnAprovados = document.querySelector("#btnAprovados");
 const btnReprovados = document.querySelector("#btnReprovados");
 
-function criarCardAluno() {
+function criarCardAluno(aluno) {
   return` <div class="card-aluno">
 
           <!-- Cabeçalho do card -->
@@ -188,22 +188,58 @@ function criarCardAluno() {
 
           <!-- Status do aluno -->
          <div class="card-status">
-            ${aluno.notaFinal >= 7 ? `<span class="status aprovado">Aprovado</span>` : `<span class="status aprovado">Reprovado</span>`}
+            ${aluno.notaFinal >= 7 ? `<span class="status aprovado">Aprovado</span>` : `<span class="status reprovado">Reprovado</span>`}
           </div> 
         </div>`
 }
 
-function exibirAlunos() {
+function exibirAlunos(alunos) {
   listaAlunos.innerHTML = "";
    alunos.forEach((aluno) => {
     listaAlunos.innerHTML += criarCardAluno(aluno)
    })
 }
 
+function aprovados(alunos) {
+  listaAlunos.innerHTML = "";
+  const alunosAprovados = alunos.filter((aluno) => {
+    return aluno.notaFinal >= 7
+  })
+
+  exibirAlunos(alunosAprovados)
+
+}
+
+btnAprovados.addEventListener("click", () => {
+    aprovados(alunos)
+    btnAprovados.classList.add("ativo")
+    btnReprovados.classList.remove("ativo")
+    btnTodos.classList.remove("ativo")
+})
+
+ function reprovados() {
+  listaAlunos.innerHTML = ""
+  const alunosReprovados = alunos.filter((alunos) => {
+    return alunos.notaFinal < 7
+  }) 
+    
+   exibirAlunos(alunosReprovados)
+
+  }
 
 
+  btnReprovados.addEventListener ("click", () => {
+    reprovados(alunos)
+    btnAprovados.classList.remove("ativo")
+    btnReprovados.classList.add("ativo")
+    btnTodos.classList.remove("ativo")
+  })
+ 
 btnTodos.addEventListener("click", () => {
   exibirAlunos(alunos)
+  btnAprovados.classList.remove("ativo")
+    btnReprovados.classList.remove("ativo")
+    btnTodos.classList.add("ativo")
 })
 
 // DESAFIOS:
